@@ -24,10 +24,18 @@ jobs:
 
       - name: Build
         run: npm run build
+        
+      - name: List build directory
+        run: ls -la build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          force_orphan: true 
+          force_orphan: true
+          
+      - name: Verify deployment
+        run: |
+          echo "Checking deployment..."
+          curl -s https://lijin04.github.io/erpsys || echo "Failed to reach site" 
