@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import BillManagement from './components/BillManagement/BillList';
+import InventoryManagement from './components/InventoryManagement/InventoryList';
 
 function App() {
+  const [activeTab, setActiveTab] = useState('bill');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="app">
+      <nav>
+        <button 
+          onClick={() => setActiveTab('bill')}
+          className={activeTab === 'bill' ? 'active' : ''}
         >
-          Learn React
-        </a>
-      </header>
+          账单管理
+        </button>
+        <button 
+          onClick={() => setActiveTab('inventory')}
+          className={activeTab === 'inventory' ? 'active' : ''}
+        >
+          仓库管理
+        </button>
+      </nav>
+      
+      {activeTab === 'bill' ? <BillManagement /> : <InventoryManagement />}
     </div>
   );
 }
 
-export default App;
+export default App; 
