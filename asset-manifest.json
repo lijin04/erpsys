@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/erpsys/static/css/main.682c2374.css",
+    "main.js": "/erpsys/static/js/main.598ed6fe.js",
+    "index.html": "/erpsys/index.html",
+    "main.682c2374.css.map": "/erpsys/static/css/main.682c2374.css.map",
+    "main.598ed6fe.js.map": "/erpsys/static/js/main.598ed6fe.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.682c2374.css",
+    "static/js/main.598ed6fe.js"
+  ]
+}
