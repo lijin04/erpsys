@@ -49,6 +49,22 @@ const InventoryList = () => {
     }
   };
 
+  const handleDeleteInventory = async (inventoryId) => {
+    console.log('尝试删除库存记录，ID:', inventoryId);
+    if (!window.confirm('确定要删除这条库存记录吗？')) {
+      return; // 用户取消删除操作
+    }
+  
+    try {
+      await axios.delete(`http://localhost:5001/api/inventory/${inventoryId}`);
+      alert('库存记录删除成功');
+      fetchInventory(); // 重新获取库存列表
+    } catch (error) {
+      console.error('删除库存记录失败:', error);
+      alert('删除库存记录失败，请稍后再试');
+    }
+  };
+
   const filteredInventory = selectedProduct
     ? inventory.filter(item => item.productName === selectedProduct)
     : inventory;
@@ -90,6 +106,7 @@ const InventoryList = () => {
             <th>操作类型</th>
             <th>数量</th>
             <th>备注</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -100,6 +117,14 @@ const InventoryList = () => {
               <td>{item.operationType}</td>
               <td>{item.quantity}</td>
               <td>{item.notes}</td>
+              <td>
+                <button 
+                  onClick={() => handleDeleteInventory(item.id)} 
+                  className="delete-button"
+                >
+                  删除
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -117,4 +142,4 @@ const InventoryList = () => {
   );
 };
 
-export default InventoryList; 
+export default InventoryList;

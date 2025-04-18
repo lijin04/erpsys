@@ -37,6 +37,22 @@ const BillList = () => {
     }
   };
 
+  const handleDeleteBill = async (billId) => {
+    console.log('尝试删除账单，ID:', billId);
+    if (!window.confirm('确定要删除这条账单吗？')) {
+      return; // 用户取消删除操作
+    }
+
+    try {
+      await axios.delete(`http://localhost:5001/api/bills/${billId}`);
+      alert('账单删除成功');
+      fetchBills(); // 重新获取账单列表
+    } catch (error) {
+      console.error('删除账单失败:', error);
+      alert('删除账单失败，请稍后再试');
+    }
+  };
+
   const filteredBills = selectedCompany
     ? bills.filter(bill => bill.companyName === selectedCompany)
     : bills;
@@ -80,6 +96,7 @@ const BillList = () => {
             <th>实收金额</th>
             <th>未收金额</th>
             <th>备注</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -92,6 +109,14 @@ const BillList = () => {
               <td>￥{bill.receivedAmount}</td>
               <td>￥{bill.outstandingAmount}</td>
               <td>{bill.notes}</td>
+              <td>
+                <button 
+                  onClick={() => handleDeleteBill(bill.id)} 
+                  className="delete-button"
+                >
+                  删除
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -102,6 +127,7 @@ const BillList = () => {
               <td>￥{filteredBills.reduce((sum, bill) => sum + parseFloat(bill.deliveryAmount), 0).toFixed(2)}</td>
               <td>￥{filteredBills.reduce((sum, bill) => sum + parseFloat(bill.receivedAmount), 0).toFixed(2)}</td>
               <td>￥{filteredBills.reduce((sum, bill) => sum + parseFloat(bill.outstandingAmount), 0).toFixed(2)}</td>
+              <td></td>
               <td></td>
             </tr>
           </tfoot>

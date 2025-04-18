@@ -160,6 +160,54 @@ app.post('/api/inventory', (req, res) => {
   );
 });
 
+// 删除账单
+app.delete('/api/bills/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`收到删除请求，ID: ${id}`);
+  const query = 'DELETE FROM bills WHERE id = ?';
+
+  connection.query(query, [id], (error, results) => {
+    if (error) {
+      console.error(`删除账单失败 (ID: ${id}):`, error);
+      res.status(500).json({ error: '删除账单失败，请稍后再试' });
+      return;
+    }
+
+    if (results.affectedRows === 0) {
+      console.warn(`尝试删除不存在的账单 (ID: ${id})`);
+      res.status(404).json({ error: '账单未找到' });
+      return;
+    }
+
+    console.log(`账单已删除 (ID: ${id})`);
+    res.status(200).json({ message: '账单已删除' });
+  });
+});
+
+// 删除库存记录
+app.delete('/api/inventory/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`收到删除库存记录请求，ID: ${id}`);
+  const query = 'DELETE FROM inventory WHERE id = ?';
+
+  connection.query(query, [id], (error, results) => {
+    if (error) {
+      console.error(`删除库存记录失败 (ID: ${id}):`, error);
+      res.status(500).json({ error: '删除库存记录失败，请稍后再试' });
+      return;
+    }
+
+    if (results.affectedRows === 0) {
+      console.warn(`尝试删除不存在的库存记录 (ID: ${id})`);
+      res.status(404).json({ error: '库存记录未找到' });
+      return;
+    }
+
+    console.log(`库存记录已删除 (ID: ${id})`);
+    res.status(200).json({ message: '库存记录已删除' });
+  });
+});
+
 // 设置服务器端口
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
@@ -193,4 +241,4 @@ app.use((req, res, next) => {
     query: req.query
   });
   next();
-}); 
+});
